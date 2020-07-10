@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Take a MOMent</string>
+
+    <!-- for Intro & SignUp & SignIn page -->
+    <string name="take_a_moment_subtitle">Beat the time differences!</string>
+    <string name="take_a_moment_description">Find the best time to contact your mom who lives overseas. </string>
+
+    <string name="sign_up_description_text">Please provide the following information to register with us.</string>
+    <string name="sign_in_description_text">Enter your email and password, to sign in.</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="sign_in">SIGN IN</string>
+
+    <string name="name">Your Name</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="your_timezone">Your Timezone</string>
+    <string name="mom_name">Mom\'s Name</string>
+    <string name="mom_timezone">Mom\'s Timezone</string>
+
+</resources>

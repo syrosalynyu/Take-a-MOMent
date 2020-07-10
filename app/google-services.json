@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "636973597020",
+    "firebase_url": "https://take-a-moment-7c5d3.firebaseio.com",
+    "project_id": "take-a-moment-7c5d3",
+    "storage_bucket": "take-a-moment-7c5d3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:636973597020:android:9c9db788927f59f121c199",
+        "android_client_info": {
+          "package_name": "com.example.takeamoment"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "636973597020-fb7adnprcahd4tt0ho49sdk1qc9sj83e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBU97PHvLPnEiiHIf-yMhgB9IMYT_tMBpQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "636973597020-fb7adnprcahd4tt0ho49sdk1qc9sj83e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
