@@ -33,6 +33,8 @@ class IntroActivity : AppCompatActivity() {
 //            var currentUserID = FirestoreClass().getCurrentUserId()
 //            if(currentUserID.isNotEmpty()){
 //                startActivity(Intent(this, MainActivity:: class.java))
+//            }else{
+//                startActivity(Intent(this, IntroActivity:: class.java))
 //            }
 //
 //            // startActivity(Intent(this, IntroActivity:: class.java))

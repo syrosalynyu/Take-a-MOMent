@@ -15,7 +15,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_time_convert.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.nav_header_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +32,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         // call the FirestoreClass().signInUser() to determin what to do
         //  FirestoreClass().signInUser(this)
+
+        showinfo()
     }
 
 
@@ -61,11 +65,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Add the click events of navigation menu items
         when (item.itemId) {
-//            R.id.nav_my_profile -> {
-//                //Toast.makeText(this@MainActivity, "My Profile", Toast.LENGTH_SHORT).show()
-//                startActivity(Intent(this, MyProfileActivity::class.java))
-//            }
-
             R.id.nav_sign_out -> {
                 // Here sign outs the user from firebase in this device.
                 FirebaseAuth.getInstance().signOut()
@@ -82,5 +81,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         // the return type is Boolean, so we have to return
         return true
+    }
+
+    private fun showinfo(){
+        val userID = FirebaseAuth.getInstance().currentUser!!.uid
+        // 或許可以直接沿用 var currentUserID = FirestoreClass().getCurrentUserId() 來取得
+
+        val df = FirebaseFirestore.getInstance().collection("users").document(userID)
+        df.get().addOnSuccessListener {document ->
+            if (document != null) {
+                Log.i("AT MainActivity", "DocumentSnapshot data: ${document.data!!["name"]}")
+            } else {
+                Log.i("AT MainActivity", "No such document")
+            }
+            // Log.i("AT MainActivity", "DocumentSnapshot data: $document $userID")
+            // Toast.makeText(this, document.data.toString(), Toast.LENGTH_LONG).show()
+
+            // to retrieve the user data from Cloud Firestore => will later use at the TimeConvertActivity
+            // testing_user_profile.text = document.data!!["name"].toString() + document.data!!["email"].toString() + document.data!!["userTimeZone"].toString() + document.data!!["momName"].toString() + document.data!!["momTimezone"].toString()
+            tv_username.text = document.data!!["name"].toString() + tv_username.text
+        }
     }
 }

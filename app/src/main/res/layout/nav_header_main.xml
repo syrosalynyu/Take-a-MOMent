@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/height_of_nav_main"
-    android:background="@drawable/ic_nav_header_bg"
-    android:gravity="end"
-    android:orientation="vertical"
+    android:background="@drawable/iv_intro_image"
+    android:gravity="bottom"
+    android:orientation="horizontal"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <TextView
@@ -24,5 +24,5 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/nav_divider_height"
-        android:background="@color/colorAccent" />
+        />
 </LinearLayout>
