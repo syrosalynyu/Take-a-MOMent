@@ -17,4 +17,6 @@
     <string name="mom_name">Mom\'s Name</string>
     <string name="mom_timezone">Mom\'s Timezone</string>
 
+    <string name="nav_sign_out">Sign Out</string>
+
 </resources>

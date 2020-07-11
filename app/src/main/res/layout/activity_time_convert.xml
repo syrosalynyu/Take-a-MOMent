@@ -9,65 +9,112 @@
     android:padding="16dp"
     tools:context=".activities.TimeConvertActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:textSize="24sp"
-        android:layout_marginTop="@dimen/intro_screen_title_text_marginTop"
-        android:text="Seattle Time"
-        />
-
-    <TextView
-        android:id="@+id/tv_my_datetime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/darker_gray"
-        android:layout_marginTop="20sp"
-        android:textSize="18sp" />
-    <Button
-        android:id="@+id/btn_my_datetime_picker"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/btn_marginStartEnd"
-        android:layout_marginTop="@dimen/sign_up_screen_btn_marginTop"
-        android:layout_marginEnd="@dimen/btn_marginStartEnd"
-        android:gravity="center"
-        android:paddingTop="@dimen/btn_paddingTopBottom"
-        android:paddingBottom="@dimen/btn_paddingTopBottom"
-        android:hint="Select Date and Time"
-        />
+        android:layout_marginStart="@dimen/authentication_screen_marginStartEnd"
+        android:layout_marginTop="@dimen/authentication_screen_marginTop"
+        android:layout_marginEnd="@dimen/authentication_screen_marginStartEnd"
+        android:elevation="@dimen/card_view_elevation"
+        app:cardCornerRadius="@dimen/card_view_corner_radius">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="@dimen/card_view_layout_content_padding">
+            <TextView
+                android:id="@+id/tv_my_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                android:layout_marginTop="@dimen/authentication_screen_content_marginTop"
+                android:text=" 's Timezone"
+                />
+
+            <TextView
+                android:id="@+id/tv_my_datetime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginTop="@dimen/intro_screen_title_text_marginTop"
+                android:textSize="18sp" />
+            <Button
+                android:id="@+id/btn_my_datetime_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/btn_marginStartEnd"
+                android:layout_marginTop="@dimen/sign_up_screen_btn_marginTop"
+                android:layout_marginEnd="@dimen/btn_marginStartEnd"
+                android:gravity="center"
+                android:paddingTop="@dimen/btn_paddingTopBottom"
+                android:paddingBottom="@dimen/btn_paddingTopBottom"
+                android:hint="Select Date and Time"
+                />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
     <!--ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" /-->
-    <TextView
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/intro_screen_title_text_marginTop"
-        android:textColor="@android:color/black"
-        android:textSize="24sp"
-        android:text="Mom's Time"
-        />
+        android:layout_marginStart="@dimen/authentication_screen_marginStartEnd"
+        android:layout_marginTop="@dimen/authentication_screen_marginTop"
+        android:layout_marginEnd="@dimen/authentication_screen_marginStartEnd"
+        android:elevation="@dimen/card_view_elevation"
+        app:cardCornerRadius="@dimen/card_view_corner_radius">
 
-    <TextView
-        android:id="@+id/tv_mom_datetime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/darker_gray"
-        android:layout_marginTop="20sp"
-        android:textSize="18sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="@dimen/card_view_layout_content_padding">
+            <TextView
+                android:id="@+id/tv_mom_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/authentication_screen_content_marginTop"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                android:text="'s Timezone"
+                />
+
+            <TextView
+                android:id="@+id/tv_mom_datetime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginTop="@dimen/intro_screen_title_text_marginTop"
+                android:textSize="18sp" />
+            <Button
+                android:id="@+id/btn_mom_datetime_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/btn_marginStartEnd"
+                android:layout_marginTop="@dimen/sign_up_screen_btn_marginTop"
+                android:layout_marginEnd="@dimen/btn_marginStartEnd"
+                android:gravity="center"
+                android:paddingTop="@dimen/btn_paddingTopBottom"
+                android:paddingBottom="@dimen/btn_paddingTopBottom"
+                android:hint="Select Date and Time"
+                />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
     <Button
-        android:id="@+id/btn_mom_datetime_picker"
+        android:id="@+id/btn_create_event"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/btn_marginStartEnd"
-        android:layout_marginTop="@dimen/sign_up_screen_btn_marginTop"
+        android:layout_marginTop="@dimen/authentication_screen_card_view_marginTop"
         android:layout_marginEnd="@dimen/btn_marginStartEnd"
         android:gravity="center"
         android:paddingTop="@dimen/btn_paddingTopBottom"
         android:paddingBottom="@dimen/btn_paddingTopBottom"
-        android:hint="Select Date and Time"
+        android:text="Create Reminder"
         />
-
 </LinearLayout>
