@@ -33,7 +33,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // call the FirestoreClass().signInUser() to determin what to do
         //  FirestoreClass().signInUser(this)
 
-        showinfo()
+        // showinfo()
+
+        fab_create_board.setOnClickListener{
+            startActivity(Intent(this, TimeConvertActivity::class.java))
+
+        }
     }
 
 
@@ -83,23 +88,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    private fun showinfo(){
-        val userID = FirebaseAuth.getInstance().currentUser!!.uid
-        // 或許可以直接沿用 var currentUserID = FirestoreClass().getCurrentUserId() 來取得
-
-        val df = FirebaseFirestore.getInstance().collection("users").document(userID)
-        df.get().addOnSuccessListener {document ->
-            if (document != null) {
-                Log.i("AT MainActivity", "DocumentSnapshot data: ${document.data!!["name"]}")
-            } else {
-                Log.i("AT MainActivity", "No such document")
-            }
-            // Log.i("AT MainActivity", "DocumentSnapshot data: $document $userID")
-            // Toast.makeText(this, document.data.toString(), Toast.LENGTH_LONG).show()
-
-            // to retrieve the user data from Cloud Firestore => will later use at the TimeConvertActivity
-            // testing_user_profile.text = document.data!!["name"].toString() + document.data!!["email"].toString() + document.data!!["userTimeZone"].toString() + document.data!!["momName"].toString() + document.data!!["momTimezone"].toString()
-            tv_username.text = document.data!!["name"].toString() + tv_username.text
-        }
-    }
+//    private fun showinfo(){
+//        val userID = FirebaseAuth.getInstance().currentUser!!.uid
+//        // 或許可以直接沿用 var currentUserID = FirestoreClass().getCurrentUserId() 來取得
+//
+//        val df = FirebaseFirestore.getInstance().collection("users").document(userID)
+//        df.get().addOnSuccessListener {document ->
+//            if (document != null) {
+//                Log.i("AT MainActivity", "DocumentSnapshot data: ${document.data!!["name"]}")
+//            } else {
+//                Log.i("AT MainActivity", "No such document")
+//            }
+//            // Log.i("AT MainActivity", "DocumentSnapshot data: $document $userID")
+//            // Toast.makeText(this, document.data.toString(), Toast.LENGTH_LONG).show()
+//
+//            // to retrieve the user data from Cloud Firestore => will later use at the TimeConvertActivity
+//            // testing_user_profile.text = document.data!!["name"].toString() + document.data!!["email"].toString() + document.data!!["userTimeZone"].toString() + document.data!!["momName"].toString() + document.data!!["momTimezone"].toString()
+//            tv_username.text = document.data!!["name"].toString()
+//        }
+//    }
 }

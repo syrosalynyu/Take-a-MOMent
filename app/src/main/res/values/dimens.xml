@@ -28,7 +28,7 @@
     <dimen name="authentication_screen_til_marginStartEnd">16dp</dimen>
     <dimen name="et_text_size">16sp</dimen>
     <dimen name="authentication_screen_til_marginTop">15dp</dimen>
-    <dimen name="authentication_screen_marginTop">60dp</dimen>
+    <dimen name="authentication_screen_marginTop">45dp</dimen>
     <dimen name="tv_timezone">5dp</dimen>
 
     <!-- for the Drawer -->
@@ -40,5 +40,14 @@
     <dimen name="nav_user_name_text_size">18sp</dimen>
     <dimen name="nav_image_circular_border_width">1dp</dimen>
     <dimen name="nav_divider_height">0.5dp</dimen>
+
+    <!-- for the Floating Action Button on the homepage page & the board creation page -->
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="create_board_content_padding">16dp</dimen>
+    <dimen name="board_image_size">100dp</dimen>
+    <dimen name="create_board_til_marginTop">25dp</dimen>
+    <dimen name="create_board_btn_marginTop">30dp</dimen>
+
+    <dimen name="time_covert_screen_marginTop">30dp</dimen>
 
 </resources>
