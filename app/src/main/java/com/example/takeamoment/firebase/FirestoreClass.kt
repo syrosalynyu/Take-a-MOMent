@@ -1,9 +1,14 @@
 package com.example.takeamoment.firebase
 
+import android.app.Activity
 import android.util.Log
 import android.widget.Toast
 import com.example.takeamoment.activities.MainActivity
+import com.example.takeamoment.activities.SignInActivity
+import com.example.takeamoment.activities.SignUpActivity
 import com.example.takeamoment.activities.TimeConvertActivity
+import com.example.takeamoment.models.Reminder
+import com.example.takeamoment.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
@@ -13,20 +18,9 @@ class FirestoreClass {
 
     private val mFireStore = Firebase.firestore
 
-    fun registerUserOnFirestore(email: String, password: String, name: String,
-                                userTimezone: String, momName: String, momTimezone: String){
-        // create hash
-        val user: HashMap<String, String> = hashMapOf(
-            "email" to email,
-            "password" to password,
-            "name" to name,
-            "userTimezone" to userTimezone,
-            "momName" to momName,
-            "momTimezone" to momTimezone)
-
-        // pass the hash into the function call
+    fun registerUserOnFirestore(activity: SignUpActivity, userInfo: User){
         mFireStore.collection("users").document(getCurrentUserId())
-            .set(user)
+            .set(userInfo, SetOptions.merge())
             .addOnSuccessListener {
                 Log.d("At FirestoreClass", "DocumentSnapshot successfully written!")
             }.addOnFailureListener { e ->
@@ -34,30 +28,46 @@ class FirestoreClass {
             }
     }
 
-    fun createReminderOnFirestore(activity: TimeConvertActivity, user: String, myDateTime: String, momDateTime: String){
-        // create hash
-        val reminder: HashMap<String, String> = hashMapOf(
-            "user" to user,
-            "myDateTime" to myDateTime,
-            "momDateTime" to momDateTime
-            )
-
-        // pass the hash into the function call
+    fun createReminderOnFirestore(activity: TimeConvertActivity, reminder: Reminder){
         mFireStore.collection("reminders").document()
-            .set(reminder)
+            .set(reminder, SetOptions.merge())
             .addOnSuccessListener {
                 Log.e("At FirestoreClass", "Reminder successfully created.")
                 Toast.makeText(activity, "Reminder created successfully", Toast.LENGTH_LONG).show()
 
-                // call the function from the CreateBoardActivity
-                //activity.boardCreatedSuccessfully()
+                // activity.reminderCreatedSuccessfully()
             }.addOnFailureListener {
                     exception ->
-                // activity.hideProgressDialog()
-                Log.e(activity.javaClass.simpleName,
-                    "Reminder creation failed.",
-                    exception
-                )
+                Log.e(activity.javaClass.simpleName, "Reminder creation failed.", exception)
+            }
+    }
+
+    // To sign in the User (to get the user data from the Firebase)
+    fun signInUser(activity: Activity, readBoardsList: Boolean = false){
+        mFireStore.collection("users")
+            .document(getCurrentUserId())
+            .get()
+            .addOnSuccessListener { document ->
+                // to store the log in user, and the document has all the info
+                val loggedInUser = document.toObject(User::class.java)!!
+
+                // OLD: now I can signin the user. This part only work for the SignInActivity
+                // if(loggedInUser != null){
+                // activity.signInSuccess(loggedInUser)
+                // }
+                when(activity){
+//                    is SignInActivity -> {
+//                        activity.signInSuccess(loggedInUser)
+//                    }
+                    // 這個是要用來將傳送user info & readboardlist)
+                    is MainActivity -> {
+                        // OLD: activity.updateNavigationUserDetails(loggedInUser)
+                        activity.updateNavigationUserDetails(loggedInUser, readBoardsList)
+                    }
+                }
+
+            }.addOnFailureListener{ e ->
+                Log.e("SingInUser", "Error writing document", e)
             }
     }
 

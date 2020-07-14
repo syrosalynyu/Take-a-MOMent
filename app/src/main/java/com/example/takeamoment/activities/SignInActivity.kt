@@ -29,13 +29,13 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 
+    // TODO: create a signInValidation() function to validate before log in
+
     // To verify a existing user using Firebase Auth when click on the SIGN IN button
     private fun signInRegisteredUser(){
         val email: String = et_email_sign_in.text.toString().trim { it <= ' ' }
         val password: String = et_password_sign_in.text.toString().trim { it <= ' ' }
 
-        // TODO: create a signInValidation() function,
-        //  and validate before log in
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {

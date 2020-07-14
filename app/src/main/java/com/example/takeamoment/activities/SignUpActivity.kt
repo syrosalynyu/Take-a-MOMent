@@ -7,7 +7,9 @@ import android.util.Log
 import android.widget.Toast
 import com.example.takeamoment.R
 import com.example.takeamoment.firebase.FirestoreClass
+import com.example.takeamoment.models.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
@@ -17,9 +19,8 @@ import kotlinx.android.synthetic.main.activity_sign_up.*
 class SignUpActivity : AppCompatActivity() {
 
     // Firebase Auth
-
-
     private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
@@ -33,13 +34,12 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
+    // TODO: create a signUpValidation() function to validate before creating the user on Firebase Auth
+
     // To register a user on Firebase Auth
     private fun registerUser(){
         val email: String = et_email.text.toString().trim { it <= ' ' }
         val password: String = et_password.text.toString().trim { it <= ' ' }
-
-        // TODO: create a signUpValidation() function,
-        //  and validate before creating the user on Firebase Auth
         val name: String = et_name.text.toString().trim { it <= ' ' }
         val userTimeZone: String = sp_your_timezone.selectedItem.toString().trim { it <= ' ' }
         val momName: String = et_mom_name.text.toString().trim { it <= ' ' }
@@ -48,12 +48,17 @@ class SignUpActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+                    val firebaseUser: FirebaseUser = task.result!!.user!!
+                    val registeredEmail = firebaseUser.email!!
+
+                    val user = User(firebaseUser.uid, registeredEmail, name, userTimeZone, momName, momTimezone)
+
+                    // Create the user document on Firestore once the auth succeed
+                    FirestoreClass().registerUserOnFirestore(this, user)
+
                     Log.d("AT SignUpActivity", "createUserWithEmail:success")
                     Toast.makeText(this, "You have successfully registered",
                         Toast.LENGTH_SHORT).show()
-
-                    FirestoreClass().registerUserOnFirestore(email, password, name,
-                        userTimeZone, momName, momTimezone)
 
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()

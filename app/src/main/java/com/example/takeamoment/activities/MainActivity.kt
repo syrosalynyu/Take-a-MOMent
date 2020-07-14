@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.core.view.GravityCompat
 import com.example.takeamoment.R
 import com.example.takeamoment.firebase.FirestoreClass
+import com.example.takeamoment.models.User
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -20,23 +21,40 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
+
+    companion object{
+        const val CREATE_REMINDER_REQUEST_CODE: Int = 10
+    }
+
+    private lateinit var mName: String
+    private lateinit var mTimezone: String
+    private lateinit var momName: String
+    private lateinit var momTimezone: String
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         setupActionBar()
 
-        // Finally, we set the listener
-        // this NavigationView id from avtivity_main
         nav_view.setNavigationItemSelectedListener(this)
 
-        // call the FirestoreClass().signInUser() to determin what to do
-        //  FirestoreClass().signInUser(this)
+        // call the FirestoreClass().signInUser() to determine what to do
+        FirestoreClass().signInUser(this, true)
 
-        // showinfo()
 
-        fab_create_board.setOnClickListener{
-            startActivity(Intent(this, TimeConvertActivity::class.java))
+        fab_create_reminder.setOnClickListener{
+            val intent = Intent(this, TimeConvertActivity::class.java)
+
+            // I also want to pass extra info to the TimeConvertActivity
+            intent.putExtra("name", mName)
+            intent.putExtra("my_timezone", mTimezone)
+            intent.putExtra("mom_name", momName)
+            intent.putExtra("mom_timezone", momTimezone)
+
+            // startActivity()
+            startActivityForResult(intent, CREATE_REMINDER_REQUEST_CODE)
 
         }
     }
@@ -86,6 +104,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         // the return type is Boolean, so we have to return
         return true
+    }
+
+    //
+    fun updateNavigationUserDetails(user: User, readBoardsList: Boolean){
+        // after doing the following, we can now pass these var to the TimeConvertActivity
+        // using intent.putExtra() in the fab_create_reminder onClickListener
+        mName = user.name
+        mTimezone = user.userTimezone
+        momName = user.momName
+        momTimezone = user.momTimezone
+
+        // to display the username in the Drawer
+        tv_username.text = user.name
+
+        // I wan to load the board if the readBoardsList is true
+//        if (readBoardsList){
+//            FirestoreClass().getBoardsList(this)
+//        }
+
     }
 
 //    private fun showinfo(){
