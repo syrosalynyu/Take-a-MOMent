@@ -28,22 +28,9 @@ class FirestoreClass {
             }
     }
 
-    fun createReminderOnFirestore(activity: TimeConvertActivity, reminder: Reminder){
-        mFireStore.collection("reminders").document()
-            .set(reminder, SetOptions.merge())
-            .addOnSuccessListener {
-                Log.e("At FirestoreClass", "Reminder successfully created.")
-                Toast.makeText(activity, "Reminder created successfully", Toast.LENGTH_LONG).show()
-
-                // activity.reminderCreatedSuccessfully()
-            }.addOnFailureListener {
-                    exception ->
-                Log.e(activity.javaClass.simpleName, "Reminder creation failed.", exception)
-            }
-    }
 
     // To sign in the User (to get the user data from the Firebase)
-    fun signInUser(activity: Activity, readBoardsList: Boolean = false){
+    fun signInUser(activity: Activity, readRemindersList: Boolean = false){
         mFireStore.collection("users")
             .document(getCurrentUserId())
             .get()
@@ -62,7 +49,7 @@ class FirestoreClass {
                     // 這個是要用來將傳送user info & readboardlist)
                     is MainActivity -> {
                         // OLD: activity.updateNavigationUserDetails(loggedInUser)
-                        activity.updateNavigationUserDetails(loggedInUser, readBoardsList)
+                        activity.updateNavigationUserDetails(loggedInUser, readRemindersList)
                     }
                 }
 
@@ -81,5 +68,47 @@ class FirestoreClass {
             currentUserID = currentUser.uid
         }
         return currentUserID
+    }
+
+    fun createReminderOnFirestore(activity: TimeConvertActivity, reminder: Reminder){
+        mFireStore.collection("reminders").document()
+            .set(reminder, SetOptions.merge())
+            .addOnSuccessListener {
+                Log.e("At FirestoreClass", "Reminder successfully created.")
+                Toast.makeText(activity, "Reminder created successfully", Toast.LENGTH_LONG).show()
+
+                activity.reminderCreatedSuccessfully()
+            }.addOnFailureListener {
+                    exception ->
+                Log.e(activity.javaClass.simpleName, "Reminder creation failed.", exception)
+            }
+    }
+
+    // To download the list of reminder documents from the Firestore
+    fun getRemindersList(activity: MainActivity){
+        mFireStore.collection("reminders")
+            .whereEqualTo("user", getCurrentUserId())
+            .orderBy("myDateTime")
+            .get()
+            .addOnSuccessListener {
+                    document ->
+                Log.i(activity.javaClass.simpleName, document.documents.toString())
+                var remindersList = ArrayList<Reminder>()
+
+                // go through the whole document, and add each of them to the remindersList
+                for(i in document.documents){
+                    val reminder = i.toObject(Reminder::class.java)!!
+                    reminder.documentId = i.id
+                    remindersList.add(reminder)
+                }
+                // remindersList = remindersList.sortedWith(compareBy {it.myDateTime}) as ArrayList<Reminder>
+                // now we can populate our list of boards to the homepage
+
+                activity.populateRemindersListToUI(remindersList)
+
+            }.addOnFailureListener {e ->
+                Log.e(activity.javaClass.simpleName, "Error while creating a board", e)
+
+            }
     }
 }

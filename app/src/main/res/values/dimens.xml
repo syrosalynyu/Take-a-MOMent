@@ -47,7 +47,20 @@
     <dimen name="board_image_size">100dp</dimen>
     <dimen name="create_board_til_marginTop">25dp</dimen>
     <dimen name="create_board_btn_marginTop">30dp</dimen>
-
     <dimen name="time_covert_screen_marginTop">30dp</dimen>
+
+
+    <!-- for the homepage RecycleView-->
+    <!--dimen name="main_screen_content_padding">16dp</dimen-->
+    <dimen name="no_reminders_available_text_size">16sp</dimen>
+    <dimen name="item_reminder_content_marginBottom">10dp</dimen>
+    <dimen name="item_reminder_content_padding">10dp</dimen>
+    <dimen name="item_reminder_image_size">60dp</dimen>
+    <dimen name="item_reminder_image_circular_border_width">0.5dp</dimen>
+    <dimen name="item_reminder_name_layout_marginStart">10dp</dimen>
+    <dimen name="item_reminder_date_time_text_size">18sp</dimen>
+    <dimen name="item_reminder_title_text_size">14sp</dimen>
+    <dimen name="item_reminder_divider_marginTop">5dp</dimen>
+    <dimen name="item_reminder_divider_height">0.3dp</dimen>
 
 </resources>

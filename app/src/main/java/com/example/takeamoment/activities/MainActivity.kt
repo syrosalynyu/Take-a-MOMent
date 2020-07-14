@@ -1,14 +1,19 @@
 package com.example.takeamoment.activities
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.core.view.GravityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.takeamoment.R
+import com.example.takeamoment.adapters.ReminderItemAdapter
 import com.example.takeamoment.firebase.FirestoreClass
+import com.example.takeamoment.models.Reminder
 import com.example.takeamoment.models.User
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -18,6 +23,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_time_convert.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.main_content.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
@@ -107,7 +113,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     //
-    fun updateNavigationUserDetails(user: User, readBoardsList: Boolean){
+    fun updateNavigationUserDetails(user: User, readRemindersList: Boolean){
         // after doing the following, we can now pass these var to the TimeConvertActivity
         // using intent.putExtra() in the fab_create_reminder onClickListener
         mName = user.name
@@ -118,11 +124,48 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // to display the username in the Drawer
         tv_username.text = user.name
 
-        // I wan to load the board if the readBoardsList is true
-//        if (readBoardsList){
-//            FirestoreClass().getBoardsList(this)
-//        }
+        // I wan to load the board if the readRemindersList is true
+        if (readRemindersList){
+            FirestoreClass().getRemindersList(this)
+        }
 
+    }
+
+    // Create the board to the MainActivity
+    // Note that, we haven't download them yet at this point
+    // will have to create another function in the FirestoreClass to download the list
+    fun populateRemindersListToUI(remindersList: ArrayList<Reminder>){
+
+        if(remindersList.size > 0){
+            rv_reminders_list.visibility = View.VISIBLE
+            tv_no_reminders_available.visibility = View.GONE
+
+            // what kind of layout manager I want to use
+            rv_reminders_list.layoutManager = LinearLayoutManager(this)
+            // make the boards list has a fixed size
+            rv_reminders_list.setHasFixedSize(true)
+
+            // prepare the adapter here
+            val adaptor = ReminderItemAdapter(this, remindersList)
+            // assign the adaptor to the rv_reminders_list
+            rv_reminders_list.adapter = adaptor
+        }else{
+            rv_reminders_list.visibility = View.GONE
+            tv_no_reminders_available.visibility = View.VISIBLE
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK
+            && requestCode == CREATE_REMINDER_REQUEST_CODE
+        ) {
+            // Get the latest reminders list from Firestore
+            FirestoreClass().getRemindersList(this)
+        } else {
+            Log.e("Cancelled", "Cancelled")
+        }
     }
 
 //    private fun showinfo(){

@@ -61,12 +61,12 @@ class TimeConvertActivity : AppCompatActivity() {
 
         showInfo()
 
-        btn_my_datetime_picker.setOnClickListener { view ->
-            clickMyDateTimePicker(view)
+        btn_my_datetime_picker.setOnClickListener {
+            clickMyDateTimePicker()
         }
 
-        btn_mom_datetime_picker.setOnClickListener { view ->
-            clickMomDateTimePicker(view)
+        btn_mom_datetime_picker.setOnClickListener {
+            clickMomDateTimePicker()
         }
 
         btn_create_reminder.setOnClickListener {
@@ -120,7 +120,7 @@ class TimeConvertActivity : AppCompatActivity() {
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun clickMyDateTimePicker(view: View) {
+    private fun clickMyDateTimePicker() {
         val myCalendar = Calendar.getInstance()
         val year = myCalendar.get(Calendar.YEAR)
         val month = myCalendar.get(Calendar.MONTH)
@@ -173,7 +173,7 @@ class TimeConvertActivity : AppCompatActivity() {
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun clickMomDateTimePicker(view: View) {
+    private fun clickMomDateTimePicker() {
 
         val myCalendar = Calendar.getInstance()
         val year = myCalendar.get(Calendar.YEAR)
@@ -223,10 +223,13 @@ class TimeConvertActivity : AppCompatActivity() {
             , day
         ).show()
     }
+
+    fun reminderCreatedSuccessfully(){
+        // In order to add the new created reminder to the homepage,
+        // we have to set it to RESULT_OK
+        setResult(Activity.RESULT_OK)
+        finish()
+    }
 }
 
-//    fun reminderCreatedSuccessfully(){
-//        // In order to add the new created board to the homepage, we have to set it to RESULT_OK
-//        setResult(Activity.RESULT_OK)
-//        finish()
-//    }
+

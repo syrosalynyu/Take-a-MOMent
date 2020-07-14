@@ -20,4 +20,7 @@
     <string name="nav_sign_out">Sign Out</string>
     <string name="date_time_picker">Edit Date and Time</string>
 
+    <string name="no_reminders_are_available">No reminders are available</string>
+
+
 </resources>
