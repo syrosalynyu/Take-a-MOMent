@@ -1,8 +1,7 @@
 package com.example.takeamoment.activities
 
-import android.app.Activity
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
+import android.app.*
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -10,10 +9,12 @@ import android.os.Bundle
 import android.text.InputType
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.takeamoment.R
 import com.example.takeamoment.firebase.FirestoreClass
 import com.example.takeamoment.models.Reminder
+import com.example.takeamoment.receivers.MyBroadcastReceiver
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
@@ -28,10 +29,17 @@ import java.util.*
 
 class TimeConvertActivity : AppCompatActivity() {
 
+    companion object{
+        const val SET_ALARM_REQUEST_CODE: Int = 12
+    }
+
     private lateinit var mName: String
     private lateinit var mTimezone: String
     private lateinit var momName: String
     private lateinit var momTimezone: String
+
+    private var currentUnix: Long = 0
+    private var futureUnix: Long = 0
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,6 +79,19 @@ class TimeConvertActivity : AppCompatActivity() {
 
         btn_create_reminder.setOnClickListener {
             createReminder()
+
+            // get the current system UNIX time
+            currentUnix = System.currentTimeMillis() / 1000L
+            // get the future UNIX from the top
+            // futureUnix - current UNIX
+            var sec = (futureUnix - currentUnix).toInt()
+            var intent = Intent(applicationContext, MyBroadcastReceiver::class.java)
+            var pi = PendingIntent.getBroadcast(applicationContext, SET_ALARM_REQUEST_CODE, intent, 0)
+
+            var am = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+            am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (sec*1000), pi)
+            Toast.makeText(applicationContext, "Alarm is set for ${currentUnix}, ${futureUnix}", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -159,6 +180,9 @@ class TimeConvertActivity : AppCompatActivity() {
                         et_my_datetime.setText(myDateTime.format(formatter))
                         et_mom_datetime.setText(zonedDateTime.format(formatter))
 
+                        // get the future time in UNIX format
+                        val epoch: Long = myDateTime.atZone(myTimeZone).toEpochSecond()
+                        futureUnix = epoch
 
                     }, hourOfDate
                     , minute
@@ -212,6 +236,10 @@ class TimeConvertActivity : AppCompatActivity() {
 //                        tv_mom_datetime.setText(zdtAtMom.format(formatter))
                         et_my_datetime.setText(zdtAtMy.format(formatter))
                         et_mom_datetime.setText(zdtAtMom.format(formatter))
+
+                        // get the future time in UNIX format
+                        val epoch: Long = myDateTime.atZone(momTimeZone).toEpochSecond()
+                        futureUnix = epoch
 
                     }, hourOfDate
                     , minute

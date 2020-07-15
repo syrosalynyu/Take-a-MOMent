@@ -75,7 +75,7 @@ class FirestoreClass {
             .set(reminder, SetOptions.merge())
             .addOnSuccessListener {
                 Log.e("At FirestoreClass", "Reminder successfully created.")
-                Toast.makeText(activity, "Reminder created successfully", Toast.LENGTH_LONG).show()
+                // Toast.makeText(activity, "Reminder created successfully", Toast.LENGTH_LONG).show()
 
                 activity.reminderCreatedSuccessfully()
             }.addOnFailureListener {
