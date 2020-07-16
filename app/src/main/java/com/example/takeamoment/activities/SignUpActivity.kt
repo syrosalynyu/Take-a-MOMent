@@ -28,8 +28,12 @@ class SignUpActivity : AppCompatActivity() {
         // Initialize Firebase Auth
         auth = Firebase.auth
 
+        // to prevent the screen scrolls back to the last EditText after choosing any spinner option
+        sp_your_timezone.isFocusableInTouchMode = true
+        sp_mom_timezone.isFocusableInTouchMode = true
+
         //CALL the registerUser function when clicking on the Sign Up button
-        btn_sign_up.setOnClickListener {view ->
+        btn_sign_up.setOnClickListener {
             registerUser()
         }
     }
