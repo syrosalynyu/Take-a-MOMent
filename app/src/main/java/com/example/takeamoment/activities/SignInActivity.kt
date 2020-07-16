@@ -24,7 +24,7 @@ class SignInActivity : AppCompatActivity() {
         // Initialize Firebase Auth
         auth = Firebase.auth
 
-        btn_sign_in.setOnClickListener {view ->
+        btn_sign_in.setOnClickListener {
             signInRegisteredUser()
         }
     }
@@ -42,12 +42,13 @@ class SignInActivity : AppCompatActivity() {
                     Log.d("At SignInActivity", "signInWithEmail:success")
                     // val user = auth.currentUser
                     // bring the user to the MainActivity page
+                    Toast.makeText(baseContext, "Sign In Successfully.", Toast.LENGTH_LONG).show()
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 } else {
                     Log.w("At SignInActivity", "signInWithEmail:failure", task.exception)
                     Toast.makeText(baseContext, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show()
+                        Toast.LENGTH_LONG).show()
                 }
 
             }
