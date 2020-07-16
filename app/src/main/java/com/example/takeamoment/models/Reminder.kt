@@ -8,14 +8,16 @@ data class Reminder(
     val myDateTime: String = "",
     val momName: String = "",
     val momDateTime: String = "",
-    var documentId: String = ""
+    var documentId: String = "",
+    val myFutureUnix: Long = 0
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
-        parcel.readString()!!
+        parcel.readString()!!,
+        parcel.readLong()!!
     ) {
     }
 
@@ -25,6 +27,7 @@ data class Reminder(
         parcel.writeString(momName)
         parcel.writeString(momDateTime)
         parcel.writeString(documentId)
+        parcel.writeLong(myFutureUnix)
     }
 
     override fun describeContents(): Int {
