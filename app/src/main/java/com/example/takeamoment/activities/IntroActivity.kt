@@ -20,25 +20,12 @@ class IntroActivity : AppCompatActivity() {
         )
 
         btn_sign_in_intro.setOnClickListener {
-            startActivity(Intent(this, SignInActivity:: class.java))
+            startActivity(Intent(this, SignInActivity::class.java))
         }
 
         btn_sign_up_intro.setOnClickListener {
-            startActivity(Intent(this, SignUpActivity:: class.java))
+            startActivity(Intent(this, SignUpActivity::class.java))
         }
 
-        // 這部分一直造成我的app閃退！！！
-//        Handler().postDelayed({
-//            // check if there is a user id, if so, auto login
-//            var currentUserID = FirestoreClass().getCurrentUserId()
-//            if(currentUserID.isNotEmpty()){
-//                startActivity(Intent(this, MainActivity:: class.java))
-//            }else{
-//                startActivity(Intent(this, IntroActivity:: class.java))
-//            }
-//
-//            // startActivity(Intent(this, IntroActivity:: class.java))
-//            finish()
-//        }, 1000)
     }
 }
