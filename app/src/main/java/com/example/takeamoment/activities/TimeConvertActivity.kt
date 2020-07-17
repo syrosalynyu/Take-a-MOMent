@@ -21,15 +21,10 @@ import java.util.*
 
 class TimeConvertActivity : AppCompatActivity() {
 
-    companion object{
-        const val SET_ALARM_REQUEST_CODE: Int = 12
-    }
-
     private lateinit var mName: String
     private lateinit var mTimezone: String
     private lateinit var momName: String
     private lateinit var momTimezone: String
-    // private var futureUnix: Long = 0
 
     private var currentUnix: Long = 0
     private var futureUnix: Long = 0
@@ -39,8 +34,6 @@ class TimeConvertActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_time_convert)
 
-
-        // showinfo()
 
         // disable the keyboard for the EditText fields
         et_my_datetime.inputType = InputType.TYPE_NULL
@@ -59,10 +52,7 @@ class TimeConvertActivity : AppCompatActivity() {
         if (intent.hasExtra("mom_timezone")) {
             momTimezone = intent.getStringExtra("mom_timezone")
         }
-//
-//        if (intent.hasExtra("futureUnix")) {
-//            futureUnix = intent.getLongExtra("futureUnix", 0)
-//        }
+
 
         showInfo()
 
@@ -76,12 +66,17 @@ class TimeConvertActivity : AppCompatActivity() {
 
         btn_create_reminder.setOnClickListener {
 
-            setAlarm()
+            if (futureUnix == 0L || futureUnix < currentUnix){
+                Toast.makeText(applicationContext, "Cannot create a past reminder. \nPlease try again.", Toast.LENGTH_LONG).show()
 
-            createReminder()
+            }else{
+                setAlarm()
 
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
+                createReminder()
+
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }
         }
     }
 
@@ -105,11 +100,9 @@ class TimeConvertActivity : AppCompatActivity() {
         // get the current system UNIX time
         currentUnix = System.currentTimeMillis() / 1000L
         // get the future UNIX from the top
-        // futureUnix - current UNIX
         var sec = (futureUnix - currentUnix).toInt()
         var intent = Intent(applicationContext, MyBroadcastReceiver::class.java)
 
-//        var pi = PendingIntent.getBroadcast(applicationContext, SET_ALARM_REQUEST_CODE, intent, 0)
         //var pi = PendingIntent.getBroadcast(applicationContext, futureUnix.toInt(), intent, 0)
         //var pi = PendingIntent.getBroadcast(applicationContext, futureUnix.toInt(), intent, PendingIntent.FLAG_CANCEL_CURRENT)
         var pi = PendingIntent.getBroadcast(applicationContext, futureUnix.toInt(), intent, PendingIntent.FLAG_ONE_SHOT)
@@ -119,17 +112,7 @@ class TimeConvertActivity : AppCompatActivity() {
 
         am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (sec*1000), pi)
 
-        //這是新移動的 從createReminder()
-        //val intent2 = Intent(this, MainActivity::class.java)
-
-       // intent2.putExtra("setAlarmRequestCode", SET_ALARM_REQUEST_CODE)
-        //intent2.putExtra("setAlarmRequestCode", 8)
-       // startActivity(intent2)
-        //finish()
-
-
-
-        Toast.makeText(applicationContext, "Reminder Created Successfully.", Toast.LENGTH_LONG).show()
+        //Toast.makeText(applicationContext, "Reminder Created Successfully.", Toast.LENGTH_LONG).show()
     }
 
 
@@ -138,31 +121,13 @@ class TimeConvertActivity : AppCompatActivity() {
         tv_my_timezone.text = mTimezone
         tv_mom_name.text = momName
         tv_mom_timezone.text = momTimezone
-//        val userID = FirebaseAuth.getInstance().currentUser!!.uid
-//        // 或許可以直接沿用 var currentUserID = FirestoreClass().getCurrentUserId() 來取得
-//
-//        val df = FirebaseFirestore.getInstance().collection("users").document(userID)
-//        df.get().addOnSuccessListener {document ->
-//            if (document != null) {
-//                Log.i("AT MainActivity", "DocumentSnapshot data: ${document.data!!["name"]}")
-//            } else {
-//                Log.i("AT MainActivity", "No such document")
-//            }
-        // Log.i("AT MainActivity", "DocumentSnapshot data: $document $userID")
-        // Toast.makeText(this, document.data.toString(), Toast.LENGTH_LONG).show()
-
-        // to retrieve the user data from Cloud Firestore => will later use at the TimeConvertActivity
-        // testing_user_profile.text = document.data!!["name"].toString() + document.data!!["email"].toString() + document.data!!["userTimeZone"].toString() + document.data!!["momName"].toString() + document.data!!["momTimezone"].toString()
-        // tv_username.text = document.data!!["name"].toString()
-//            tv_my_name.text = "${document.data!!["name"].toString()}'s Timezone:"
-//            tv_my_timezone.text = document.data!!["userTimezone"].toString()
-//            tv_mom_name.text = "${document.data!!["momName"].toString()}'s Timezone"
-//            tv_mom_timezone.text = document.data!!["momTimezone"].toString()
     }
 
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun clickMyDateTimePicker() {
+        currentUnix = System.currentTimeMillis() / 1000L
+
         val myCalendar = Calendar.getInstance()
         val year = myCalendar.get(Calendar.YEAR)
         val month = myCalendar.get(Calendar.MONTH)
@@ -187,7 +152,6 @@ class TimeConvertActivity : AppCompatActivity() {
                             selectedHourOfDay,
                             selectedMinute
                         )
-                        // val myFormattedDateTime = myDateTime.format(formatter);
 
                         val myTimeZone = ZoneId.of(mTimezone)
                         val momTimeZone = ZoneId.of(momTimezone)
@@ -196,8 +160,6 @@ class TimeConvertActivity : AppCompatActivity() {
                         val zonedDateTime =
                             myDateTime.atZone(myTimeZone).withZoneSameInstant(momTimeZone)
 
-//                        tv_my_datetime.setText(myFormattedDateTime.toString())
-//                        tv_mom_datetime.setText(zonedDateTime.format(formatter))
                         et_my_datetime.setText(myDateTime.format(formatter))
                         et_mom_datetime.setText(zonedDateTime.format(formatter))
 
@@ -206,7 +168,6 @@ class TimeConvertActivity : AppCompatActivity() {
                         futureUnix = epoch
 
                         Toast.makeText(applicationContext, "${futureUnix}", Toast.LENGTH_LONG).show()
-
 
                     }, hourOfDate
                     , minute
@@ -222,6 +183,7 @@ class TimeConvertActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun clickMomDateTimePicker() {
+        currentUnix = System.currentTimeMillis() / 1000L
 
         val myCalendar = Calendar.getInstance()
         val year = myCalendar.get(Calendar.YEAR)
@@ -247,7 +209,6 @@ class TimeConvertActivity : AppCompatActivity() {
                             selectedHourOfDay,
                             selectedMinute
                         )
-                        // val myFormattedDateTime = myDateTime.format(formatter)
 
                         // https://howtodoinjava.com/java/date-time/localdate-zoneddatetime-conversion/
                         val myTimeZone = ZoneId.of(mTimezone)
@@ -256,8 +217,7 @@ class TimeConvertActivity : AppCompatActivity() {
                         val zdtAtMom = myDateTime.atZone(momTimeZone)
                         val zdtAtMy = zdtAtMom.withZoneSameInstant(myTimeZone)
 
-//                        tv_my_datetime.setText(zdtAtMy.format(formatter))
-//                        tv_mom_datetime.setText(zdtAtMom.format(formatter))
+
                         et_my_datetime.setText(zdtAtMy.format(formatter))
                         et_mom_datetime.setText(zdtAtMom.format(formatter))
 
@@ -266,7 +226,6 @@ class TimeConvertActivity : AppCompatActivity() {
                         futureUnix = epoch
 
                         Toast.makeText(applicationContext, "${futureUnix}", Toast.LENGTH_LONG).show()
-
 
                     }, hourOfDate
                     , minute
@@ -285,7 +244,6 @@ class TimeConvertActivity : AppCompatActivity() {
         setResult(Activity.RESULT_OK)
         finish()
     }
-
 
 }
 
