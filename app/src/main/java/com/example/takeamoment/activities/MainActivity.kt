@@ -1,6 +1,9 @@
 package com.example.takeamoment.activities
 
 import android.app.Activity
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,12 +12,14 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.GravityCompat
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.takeamoment.R
 import com.example.takeamoment.adapters.ReminderItemAdapter
 import com.example.takeamoment.firebase.FirestoreClass
 import com.example.takeamoment.models.Reminder
 import com.example.takeamoment.models.User
+import com.example.takeamoment.receivers.MyBroadcastReceiver
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -49,18 +54,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // call the FirestoreClass().signInUser() to determine what to do
         FirestoreClass().signInUser(this, true)
 
-
         fab_create_reminder.setOnClickListener{
-            val intent = Intent(this, TimeConvertActivity::class.java)
-
+            val intentOne = Intent(this, TimeConvertActivity::class.java)
             // I also want to pass extra info to the TimeConvertActivity
-            intent.putExtra("name", mName)
-            intent.putExtra("my_timezone", mTimezone)
-            intent.putExtra("mom_name", momName)
-            intent.putExtra("mom_timezone", momTimezone)
+            intentOne.putExtra("name", mName)
+            intentOne.putExtra("my_timezone", mTimezone)
+            intentOne.putExtra("mom_name", momName)
+            intentOne.putExtra("mom_timezone", momTimezone)
 
-            // startActivity()
-            startActivityForResult(intent, CREATE_REMINDER_REQUEST_CODE)
+            startActivityForResult(intentOne, CREATE_REMINDER_REQUEST_CODE)
 
         }
     }
@@ -81,8 +83,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun toggleDrawer(){
-        //drawer_layout is the DrawerLayput for the activity_main.xml
-        // if it is open, we want to close it
+        // if the drawer is open, we want to close it
         if(drawer_layout.isDrawerOpen(GravityCompat.START)){
             drawer_layout.closeDrawer(GravityCompat.START)
         }else{
@@ -108,7 +109,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // close the drawer no matter what
         drawer_layout.closeDrawer(GravityCompat.START)
 
-        // the return type is Boolean, so we have to return
         return true
     }
 
@@ -131,9 +131,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
-    // Create the board to the MainActivity
-    // Note that, we haven't download them yet at this point
-    // will have to create another function in the FirestoreClass to download the list
+
+    // Create the board on the MainActivity
     fun populateRemindersListToUI(remindersList: ArrayList<Reminder>){
 
         if(remindersList.size > 0){
@@ -149,11 +148,33 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val adaptor = ReminderItemAdapter(this, remindersList)
             // assign the adaptor to the rv_reminders_list
             rv_reminders_list.adapter = adaptor
+
+            // Click to delete the existing reminder
+            adaptor.setOnItemClickListener(object: ReminderItemAdapter.OnItemClickListener{
+                override fun setOnClickListener(pos: Int) {
+
+                    val reminder = remindersList[pos]
+                    val myFutureUnix = reminder.myFutureUnix.toInt()
+                    cancelAlarm(myFutureUnix)
+
+                    FirestoreClass().deleteReminderOnFirestore(this@MainActivity, reminder)
+
+                    // remove it from the RecyclerView
+                    remindersList.removeAt(pos)
+                    adaptor.notifyItemRemoved(pos)
+                }
+
+            })
+
+            // (Retired) Replace the SwipeToDelete with the OnItemClick
+            // var itemTouchHelper: ItemTouchHelper = ItemTouchHelper(SwipeToDelete(adaptor))
+            // itemTouchHelper.attachToRecyclerView(rv_reminders_list)
         }else{
             rv_reminders_list.visibility = View.GONE
             tv_no_reminders_available.visibility = View.VISIBLE
         }
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -163,28 +184,26 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         ) {
             // Get the latest reminders list from Firestore
             FirestoreClass().getRemindersList(this)
+
         } else {
             Log.e("Cancelled", "Cancelled")
         }
     }
 
-//    private fun showinfo(){
-//        val userID = FirebaseAuth.getInstance().currentUser!!.uid
-//        // 或許可以直接沿用 var currentUserID = FirestoreClass().getCurrentUserId() 來取得
-//
-//        val df = FirebaseFirestore.getInstance().collection("users").document(userID)
-//        df.get().addOnSuccessListener {document ->
-//            if (document != null) {
-//                Log.i("AT MainActivity", "DocumentSnapshot data: ${document.data!!["name"]}")
-//            } else {
-//                Log.i("AT MainActivity", "No such document")
-//            }
-//            // Log.i("AT MainActivity", "DocumentSnapshot data: $document $userID")
-//            // Toast.makeText(this, document.data.toString(), Toast.LENGTH_LONG).show()
-//
-//            // to retrieve the user data from Cloud Firestore => will later use at the TimeConvertActivity
-//            // testing_user_profile.text = document.data!!["name"].toString() + document.data!!["email"].toString() + document.data!!["userTimeZone"].toString() + document.data!!["momName"].toString() + document.data!!["momTimezone"].toString()
-//            tv_username.text = document.data!!["name"].toString()
-//        }
-//    }
+
+    private fun cancelAlarm(myfutureUnix: Int){
+
+        val intent = Intent(applicationContext, MyBroadcastReceiver::class.java)
+        val pi = PendingIntent.getBroadcast(
+            applicationContext,
+            myfutureUnix,
+            intent,
+            PendingIntent.FLAG_ONE_SHOT)
+        val am = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        am.cancel(pi)
+        Toast.makeText(applicationContext, "Alarm is now cancelled.", Toast.LENGTH_LONG).show()
+
+    }
+
 }

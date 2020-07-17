@@ -14,6 +14,8 @@ open class ReminderItemAdapter(
     private var list: ArrayList<Reminder>
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    private lateinit var mListener: OnItemClickListener
+
     override fun getItemCount(): Int {
         return list.size
     }
@@ -28,15 +30,38 @@ open class ReminderItemAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return MyViewHolder(
-            LayoutInflater.from(context).inflate(
+        val view = LayoutInflater.from(context).inflate(
                 R.layout.item_reminder,
                 parent,
                 false
             )
-        )
+        return MyViewHolder(view, mListener)
     }
 
-    private class MyViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    // (Retired) Was used for the swipetodelete function
+//    fun deleteItem(position: Int){
+//        list.removeAt(position)
+//        notifyItemRemoved(position)
+//    }
+
+    interface OnItemClickListener{
+        fun setOnClickListener(pos: Int)
+    }
+
+    fun setOnItemClickListener(mListener: OnItemClickListener){
+        this.mListener = mListener
+    }
+
+    class MyViewHolder(view: View, var mListener: OnItemClickListener) : RecyclerView.ViewHolder(view), View.OnClickListener{
+        init{
+            view.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            if(mListener != null){
+                mListener.setOnClickListener(adapterPosition)
+            }
+        }
+    }
 }
 
