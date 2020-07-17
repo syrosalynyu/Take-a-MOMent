@@ -3,6 +3,7 @@ package com.example.takeamoment.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
 import com.example.takeamoment.R
@@ -49,28 +50,73 @@ class SignUpActivity : AppCompatActivity() {
         val momName: String = et_mom_name.text.toString().trim { it <= ' ' }
         val momTimezone: String = sp_mom_timezone.selectedItem.toString().trim { it <= ' ' }
 
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    val firebaseUser: FirebaseUser = task.result!!.user!!
-                    val registeredEmail = firebaseUser.email!!
+        if (validateForm(email, password, name, userTimeZone, momName, momTimezone)) {
+            auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        val firebaseUser: FirebaseUser = task.result!!.user!!
+                        val registeredEmail = firebaseUser.email!!
 
-                    val user = User(firebaseUser.uid, registeredEmail, name, userTimeZone, momName, momTimezone)
+                        val user = User(
+                            firebaseUser.uid,
+                            registeredEmail,
+                            name,
+                            userTimeZone,
+                            momName,
+                            momTimezone
+                        )
 
-                    // Create the user document on Firestore once the auth succeed
-                    FirestoreClass().registerUserOnFirestore(this, user)
+                        // Create the user document on Firestore once the auth succeed
+                        FirestoreClass().registerUserOnFirestore(this, user)
 
-                    Log.d("AT SignUpActivity", "createUserWithEmail:success")
-                    Toast.makeText(this, "You have successfully registered",
-                        Toast.LENGTH_SHORT).show()
+                        Log.d("AT SignUpActivity", "createUserWithEmail:success")
+                        Toast.makeText(
+                            this, "You have successfully registered",
+                            Toast.LENGTH_SHORT
+                        ).show()
 
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
-                } else {
-                    Log.w("AT SignUpActivity", "createUserWithEmail:failure", task.exception)
-                    Toast.makeText(this, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
+                    } else {
+                        Log.w("AT SignUpActivity", "createUserWithEmail:failure", task.exception)
+                        Toast.makeText(
+                            this, "Authentication failed.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
+        }
+    }
+
+    private fun validateForm(email: String, password: String, name: String, userTimeZone: String, momName: String, momTimezone: String): Boolean {
+        return when {
+            TextUtils.isEmpty(email) -> {
+                Toast.makeText(baseContext, "Please enter email.", Toast.LENGTH_SHORT).show()
+                false
             }
+            TextUtils.isEmpty(password) -> {
+                Toast.makeText(baseContext, "Please enter password.", Toast.LENGTH_SHORT).show()
+                false
+            }
+            TextUtils.isEmpty(name) -> {
+                Toast.makeText(baseContext, "Please enter your name.", Toast.LENGTH_SHORT).show()
+                false
+            }
+            TextUtils.isEmpty(userTimeZone) -> {
+                Toast.makeText(baseContext, "Please pick your timezone.", Toast.LENGTH_SHORT).show()
+                false
+            }
+            TextUtils.isEmpty(momName) -> {
+                Toast.makeText(baseContext, "Please enter your mom's name.", Toast.LENGTH_SHORT).show()
+                false
+            }
+            TextUtils.isEmpty(momTimezone) -> {
+                Toast.makeText(baseContext, "Please pick your mom's timezone.", Toast.LENGTH_SHORT).show()
+                false
+            }
+            else -> {
+                true
+            }
+        }
     }
 }
