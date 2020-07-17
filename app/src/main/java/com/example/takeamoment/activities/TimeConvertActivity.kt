@@ -4,24 +4,16 @@ import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import com.example.takeamoment.R
 import com.example.takeamoment.firebase.FirestoreClass
 import com.example.takeamoment.models.Reminder
 import com.example.takeamoment.receivers.MyBroadcastReceiver
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.android.synthetic.main.activity_time_convert.*
-import kotlinx.android.synthetic.main.activity_time_convert.view.*
-import kotlinx.android.synthetic.main.nav_header_main.*
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -37,6 +29,7 @@ class TimeConvertActivity : AppCompatActivity() {
     private lateinit var mTimezone: String
     private lateinit var momName: String
     private lateinit var momTimezone: String
+    // private var futureUnix: Long = 0
 
     private var currentUnix: Long = 0
     private var futureUnix: Long = 0
@@ -66,6 +59,10 @@ class TimeConvertActivity : AppCompatActivity() {
         if (intent.hasExtra("mom_timezone")) {
             momTimezone = intent.getStringExtra("mom_timezone")
         }
+//
+//        if (intent.hasExtra("futureUnix")) {
+//            futureUnix = intent.getLongExtra("futureUnix", 0)
+//        }
 
         showInfo()
 
@@ -78,20 +75,13 @@ class TimeConvertActivity : AppCompatActivity() {
         }
 
         btn_create_reminder.setOnClickListener {
+
+            setAlarm()
+
             createReminder()
 
-            // get the current system UNIX time
-            currentUnix = System.currentTimeMillis() / 1000L
-            // get the future UNIX from the top
-            // futureUnix - current UNIX
-            var sec = (futureUnix - currentUnix).toInt()
-            var intent = Intent(applicationContext, MyBroadcastReceiver::class.java)
-            var pi = PendingIntent.getBroadcast(applicationContext, SET_ALARM_REQUEST_CODE, intent, 0)
-
-            var am = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-            am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (sec*1000), pi)
-            Toast.makeText(applicationContext, "Alarm is set for ${currentUnix}, ${futureUnix}", Toast.LENGTH_LONG).show()
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
     }
 
@@ -102,16 +92,47 @@ class TimeConvertActivity : AppCompatActivity() {
         val momDateTime: String = et_mom_datetime.text.toString().trim { it <= ' ' }
 
         // create a Reminder object locally
-        var reminder = Reminder(user, myDateTime, momName, momDateTime)
+        var reminder = Reminder(user, myDateTime, momName, momDateTime, "none", futureUnix)
 
         // do the actually creation on Firestore
         FirestoreClass().createReminderOnFirestore(this, reminder)
 
-        startActivity(Intent(this, MainActivity::class.java))
-        finish()
+
     }
 
-    // TODO: have to verify if it works?
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun setAlarm(){
+        // get the current system UNIX time
+        currentUnix = System.currentTimeMillis() / 1000L
+        // get the future UNIX from the top
+        // futureUnix - current UNIX
+        var sec = (futureUnix - currentUnix).toInt()
+        var intent = Intent(applicationContext, MyBroadcastReceiver::class.java)
+
+//        var pi = PendingIntent.getBroadcast(applicationContext, SET_ALARM_REQUEST_CODE, intent, 0)
+        //var pi = PendingIntent.getBroadcast(applicationContext, futureUnix.toInt(), intent, 0)
+        //var pi = PendingIntent.getBroadcast(applicationContext, futureUnix.toInt(), intent, PendingIntent.FLAG_CANCEL_CURRENT)
+        var pi = PendingIntent.getBroadcast(applicationContext, futureUnix.toInt(), intent, PendingIntent.FLAG_ONE_SHOT)
+
+
+        var am = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (sec*1000), pi)
+
+        //這是新移動的 從createReminder()
+        //val intent2 = Intent(this, MainActivity::class.java)
+
+       // intent2.putExtra("setAlarmRequestCode", SET_ALARM_REQUEST_CODE)
+        //intent2.putExtra("setAlarmRequestCode", 8)
+       // startActivity(intent2)
+        //finish()
+
+
+
+        Toast.makeText(applicationContext, "Reminder Created Successfully.", Toast.LENGTH_LONG).show()
+    }
+
+
     private fun showInfo() {
         tv_my_name.text = mName
         tv_my_timezone.text = mTimezone
@@ -158,18 +179,18 @@ class TimeConvertActivity : AppCompatActivity() {
                     this,
                     TimePickerDialog.OnTimeSetListener { view, selectedHourOfDay, selectedMinute ->
 
-                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
                         val myDateTime = LocalDateTime.of(
                             selectedYear,
                             selectedMonth + 1,
                             selectedDayOfMonth,
                             selectedHourOfDay,
                             selectedMinute
-                        );
+                        )
                         // val myFormattedDateTime = myDateTime.format(formatter);
 
-                        val myTimeZone = ZoneId.of("America/Los_Angeles")
-                        val momTimeZone = ZoneId.of("Asia/Taipei");
+                        val myTimeZone = ZoneId.of(mTimezone)
+                        val momTimeZone = ZoneId.of(momTimezone)
 
                         // https://stackoverflow.com/questions/42280454/changing-localdatetime-based-on-time-difference-in-current-time-zone-vs-eastern?rq=1#:~:text=To%20convert%20a%20LocalDateTime%20to,result%20back%20to%20a%20LocalDateTime%20.
                         val zonedDateTime =
@@ -183,6 +204,9 @@ class TimeConvertActivity : AppCompatActivity() {
                         // get the future time in UNIX format
                         val epoch: Long = myDateTime.atZone(myTimeZone).toEpochSecond()
                         futureUnix = epoch
+
+                        Toast.makeText(applicationContext, "${futureUnix}", Toast.LENGTH_LONG).show()
+
 
                     }, hourOfDate
                     , minute
@@ -215,19 +239,19 @@ class TimeConvertActivity : AppCompatActivity() {
                     this,
                     TimePickerDialog.OnTimeSetListener { view, selectedHourOfDay, selectedMinute ->
 
-                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
                         val myDateTime = LocalDateTime.of(
                             selectedYear,
                             selectedMonth + 1,
                             selectedDayOfMonth,
                             selectedHourOfDay,
                             selectedMinute
-                        );
-                        // val myFormattedDateTime = myDateTime.format(formatter);
+                        )
+                        // val myFormattedDateTime = myDateTime.format(formatter)
 
                         // https://howtodoinjava.com/java/date-time/localdate-zoneddatetime-conversion/
-                        val myTimeZone = ZoneId.of("America/Los_Angeles")
-                        val momTimeZone = ZoneId.of("Asia/Taipei");
+                        val myTimeZone = ZoneId.of(mTimezone)
+                        val momTimeZone = ZoneId.of(momTimezone)
 
                         val zdtAtMom = myDateTime.atZone(momTimeZone)
                         val zdtAtMy = zdtAtMom.withZoneSameInstant(myTimeZone)
@@ -240,6 +264,9 @@ class TimeConvertActivity : AppCompatActivity() {
                         // get the future time in UNIX format
                         val epoch: Long = myDateTime.atZone(momTimeZone).toEpochSecond()
                         futureUnix = epoch
+
+                        Toast.makeText(applicationContext, "${futureUnix}", Toast.LENGTH_LONG).show()
+
 
                     }, hourOfDate
                     , minute
@@ -258,6 +285,8 @@ class TimeConvertActivity : AppCompatActivity() {
         setResult(Activity.RESULT_OK)
         finish()
     }
+
+
 }
 
 

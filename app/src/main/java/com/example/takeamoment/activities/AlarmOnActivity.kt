@@ -13,6 +13,7 @@ class AlarmOnActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_alarm_on)
 
+        // I want to play the alarm tone, so here we are creating a instance of the MediaPlayer
         val mp = MediaPlayer.create(applicationContext, R.raw.lovingly)
         mp.start()
 
