@@ -15,6 +15,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_sign_in.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignUpActivity : AppCompatActivity() {
@@ -25,6 +26,8 @@ class SignUpActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
+
+        setupActionBar()
 
         // Initialize Firebase Auth
         auth = Firebase.auth
@@ -39,7 +42,22 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    // TODO: create a signUpValidation() function to validate before creating the user on Firebase Auth
+    // to create a back button on the top left
+    private fun setupActionBar(){
+        // a Android function
+        setSupportActionBar(toolbar_sign_up_activity)
+
+        val actionBar = supportActionBar
+
+        if(actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            // set the arrow button that we want to use.
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
+        }
+        // in order to make the button work
+        toolbar_sign_up_activity.setNavigationOnClickListener{ onBackPressed()}
+    }
+
 
     // To register a user on Firebase Auth
     private fun registerUser(){

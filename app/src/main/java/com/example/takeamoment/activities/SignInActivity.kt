@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.WindowManager
 import android.widget.Toast
 import com.example.takeamoment.R
 import com.google.firebase.auth.FirebaseAuth
@@ -22,6 +23,8 @@ class SignInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
+        setupActionBar()
+
         // Initialize Firebase Auth
         auth = Firebase.auth
 
@@ -30,7 +33,21 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 
-    // TODO: create a signInValidation() function to validate before log in
+    // to create a back button on the top left
+    private fun setupActionBar(){
+        // a Android function
+        setSupportActionBar(toolbar_sign_in_activity)
+
+        val actionBar = supportActionBar
+
+        if(actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            // set the arrow button that we want to use.
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
+        }
+        // in order to make the button work
+        toolbar_sign_in_activity.setNavigationOnClickListener{ onBackPressed()}
+    }
 
     // To verify a existing user using Firebase Auth when click on the SIGN IN button
     private fun signInRegisteredUser(){
