@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.takeamoment.R
 import kotlinx.android.synthetic.main.activity_alarm_on.*
+import kotlinx.android.synthetic.main.activity_time_convert.*
 
 
 // Resource for set upt the alarm: https://www.youtube.com/watch?v=2ykRrMU1LPM&t=819s
