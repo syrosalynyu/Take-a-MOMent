@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_bg"
+    android:background="@drawable/ic_bg3"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context=".activities.TimeConvertActivity">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_time_convert_activity"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize">
         <TextView
@@ -88,7 +89,7 @@
                 android:gravity="center"
                 android:paddingTop="@dimen/btn_paddingTopBottom"
                 android:paddingBottom="@dimen/btn_paddingTopBottom"
-                android:hint="Select Date and Time"
+                android:hint="@string/select_date_time"
                 />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -162,7 +163,7 @@
                 android:layout_marginTop="@dimen/sign_up_screen_btn_marginTop"
                 android:layout_marginEnd="@dimen/btn_marginStartEnd"
                 android:gravity="center"
-                android:hint="Select Date and Time"
+                android:hint="@string/select_date_time"
                 android:paddingTop="@dimen/btn_paddingTopBottom"
                 android:paddingBottom="@dimen/btn_paddingTopBottom" />
         </LinearLayout>
@@ -176,8 +177,10 @@
         android:layout_marginTop="@dimen/authentication_screen_card_view_marginTop"
         android:layout_marginEnd="@dimen/btn_marginStartEnd"
         android:gravity="center"
+        android:background="@drawable/green_button_rounded"
+        android:foreground="?attr/selectableItemBackground"
         android:paddingTop="@dimen/btn_paddingTopBottom"
         android:paddingBottom="@dimen/btn_paddingTopBottom"
-        android:text="Create Reminder"
+        android:text="@string/create_reminder"
         />
 </LinearLayout>

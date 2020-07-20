@@ -13,6 +13,7 @@ import com.example.takeamoment.R
 import com.example.takeamoment.firebase.FirestoreClass
 import com.example.takeamoment.models.Reminder
 import com.example.takeamoment.receivers.MyBroadcastReceiver
+import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.android.synthetic.main.activity_time_convert.*
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -34,10 +35,11 @@ class TimeConvertActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_time_convert)
 
-
         // disable the keyboard for the EditText fields
         et_my_datetime.inputType = InputType.TYPE_NULL
         et_mom_datetime.inputType = InputType.TYPE_NULL
+
+        setupActionBar()
 
         // to get the putExtra info from the MainActivity
         if (intent.hasExtra("name")) {
@@ -78,6 +80,18 @@ class TimeConvertActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    private fun setupActionBar(){
+        // a Android function
+        setSupportActionBar(toolbar_time_convert_activity)
+        val actionBar = supportActionBar
+
+        if(actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
+        }
+        toolbar_time_convert_activity.setNavigationOnClickListener{ onBackPressed()}
     }
 
     // To create the board document on Firestore
@@ -167,7 +181,7 @@ class TimeConvertActivity : AppCompatActivity() {
                         val epoch: Long = myDateTime.atZone(myTimeZone).toEpochSecond()
                         futureUnix = epoch
 
-                        Toast.makeText(applicationContext, "${futureUnix}", Toast.LENGTH_LONG).show()
+                        // Toast.makeText(applicationContext, "${futureUnix}", Toast.LENGTH_LONG).show()
 
                     }, hourOfDate
                     , minute
@@ -225,7 +239,7 @@ class TimeConvertActivity : AppCompatActivity() {
                         val epoch: Long = myDateTime.atZone(momTimeZone).toEpochSecond()
                         futureUnix = epoch
 
-                        Toast.makeText(applicationContext, "${futureUnix}", Toast.LENGTH_LONG).show()
+                        // Toast.makeText(applicationContext, "${futureUnix}", Toast.LENGTH_LONG).show()
 
                     }, hourOfDate
                     , minute

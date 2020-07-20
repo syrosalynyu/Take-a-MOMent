@@ -2,12 +2,13 @@
     <string name="app_name">Take a MOMent</string>
 
     <!-- for Intro & SignUp & SignIn page -->
-    <string name="take_a_moment_subtitle">Beat the time differences!</string>
+    <string name="take_a_moment_subtitle">Beat the time differences!!</string>
     <string name="take_a_moment_description">Find the best time to contact your mom who lives overseas. </string>
 
     <string name="sign_up_description_text">Please provide the following information to register with us.</string>
-    <string name="sign_in_description_text">Enter your email and password, to sign in.</string>
+    <string name="sign_in_description_text">Enter your email and password to sign in.</string>
     <string name="sign_up">SIGN UP</string>
+    <string name="dont_have_account">Don\'t have an account? SIGN UP</string>
     <string name="sign_in">SIGN IN</string>
 
     <string name="name">Your Name</string>
@@ -17,10 +18,14 @@
     <string name="mom_name">Mom\'s Name</string>
     <string name="mom_timezone">Mom\'s Timezone</string>
 
+    <string name="nav_my_profile">My Profile</string>
     <string name="nav_sign_out">Sign Out</string>
     <string name="date_time_picker">Edit Date and Time</string>
+    <string name="update">UPDATE</string>
 
     <string name="no_reminders_are_available">No reminders are available</string>
+    <string name="create_reminder">Create Reminder</string>
+    <string name="select_date_time">Select Date and Time</string>
 
 
 </resources>

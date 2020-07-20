@@ -5,10 +5,10 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
+    android:background="@drawable/ic_bg3"
     tools:context=".activities.IntroActivity">
-    <!-- android:background="@drawable/intro_background" -->
 
-    <TextView
+    <!--TextView
         android:id="@+id/tv_app_name_intro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,30 +16,23 @@
         android:text="@string/app_name"
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/intro_screen_title_text_size"
-        android:textStyle="bold" />
+        android:textStyle="bold" /-->
 
-    <!-- android:contentDescription="@string/image_contentDescription" -->
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="233dp"
-        android:layout_marginTop="@dimen/intro_screen_image_marginTop"
-        android:src="@drawable/iv_intro_image"
-        android:contentDescription="intro_image"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/lets_get_started_text_marginTop"
+        android:layout_marginTop="@dimen/intro_screen_title_text_marginTop"
         android:text="@string/take_a_moment_subtitle"
-        android:textColor="@color/primary_text_color"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"
         android:textSize="@dimen/lets_get_started_text_size" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/intro_text_marginStartEnd"
-        android:layout_marginTop="@dimen/intro_text_marginTop"
+        android:layout_marginTop="@dimen/intro_screen_title_text_marginTop"
         android:layout_marginEnd="@dimen/intro_text_marginStartEnd"
         android:gravity="center"
         android:lineSpacingExtra="@dimen/intro_text_line_spacing_extra"
@@ -47,38 +40,46 @@
         android:textColor="@color/secondary_text_color"
         android:textSize="@dimen/intro_text_size" />
 
+    <ImageView
+        android:layout_width="121dp"
+        android:layout_height="105dp"
+        android:layout_marginTop="@dimen/intro_screen_title_text_marginTop"
+        android:layout_marginBottom="@dimen/intro_screen_title_text_marginTop"
+        android:contentDescription="intro_image"
+        android:src="@drawable/earth" />
+
     <Button
         android:id="@+id/btn_sign_in_intro"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginStart="@dimen/btn_marginStartEnd"
-        android:layout_marginTop="@dimen/intro_screen_sign_in_btn_marginTop"
+        android:layout_marginTop="@dimen/intro_screen_title_text_marginTop"
         android:layout_marginEnd="@dimen/btn_marginStartEnd"
         android:gravity="center"
+        android:background="@drawable/white_button_rounded"
         android:paddingTop="@dimen/btn_paddingTopBottom"
         android:paddingBottom="@dimen/btn_paddingTopBottom"
         android:text="@string/sign_in"
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/btn_text_size" />
-    <!-- android:background="@drawable/shape_button_rounded"
-    android:foreground="?attr/selectableItemBackground" -->
 
     <Button
         android:id="@+id/btn_sign_up_intro"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginStart="@dimen/btn_marginStartEnd"
         android:layout_marginTop="@dimen/intro_screen_sign_up_btn_marginTop"
         android:layout_marginEnd="@dimen/btn_marginStartEnd"
-
+        android:background="@android:color/transparent"
+        android:textAllCaps="false"
         android:gravity="center"
         android:paddingTop="@dimen/btn_paddingTopBottom"
         android:paddingBottom="@dimen/btn_paddingTopBottom"
-        android:text="@string/sign_up"
+        android:text="@string/dont_have_account"
         android:textColor="@color/colorAccent"
-        android:textSize="@dimen/btn_text_size" />
+        android:textSize="@dimen/btn_text_size_sm" />
     <!-- android:background="@drawable/white_border_shape_button_rounded"
     android:foreground="?attr/selectableItemBackground" -->
 

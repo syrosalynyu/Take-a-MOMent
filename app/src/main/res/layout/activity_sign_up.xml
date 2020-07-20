@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_bg"
+    android:background="@drawable/ic_bg3"
     android:orientation="vertical"
     tools:context=".activities.SignUpActivity">
 
@@ -126,7 +126,7 @@
                         android:gravity="center_vertical"
                         android:text="@string/your_timezone"
                         android:textColor="@color/secondary_text_color"
-                        android:textSize="@dimen/authentication_description_text_size" />
+                        android:textSize="@dimen/spinner_title_text_size" />
                     <!-- https://dzone.com/articles/android-material-themes-made-easy-with-appcompat -->
                     <Spinner
                         style="@style/Widget.AppCompat.Spinner.Underlined"
@@ -168,7 +168,7 @@
                         android:gravity="center_vertical"
                         android:text="@string/mom_timezone"
                         android:textColor="@color/secondary_text_color"
-                        android:textSize="@dimen/authentication_description_text_size" />
+                        android:textSize="@dimen/spinner_title_text_size" />
                     <!--androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/et_mom_timezone"
                         android:layout_width="match_parent"
@@ -193,15 +193,16 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/btn_marginStartEnd"
                     android:layout_marginTop="@dimen/sign_up_screen_btn_marginTop"
+                    android:layout_marginBottom="@dimen/authentication_screen_til_marginTop"
                     android:layout_marginEnd="@dimen/btn_marginStartEnd"
                     android:gravity="center"
                     android:paddingTop="@dimen/btn_paddingTopBottom"
                     android:paddingBottom="@dimen/btn_paddingTopBottom"
                     android:text="@string/sign_up"
+                    android:background="@drawable/green_button_rounded"
+                    android:foreground="?attr/selectableItemBackground"
                     android:textColor="@color/primary_text_color"
                     android:textSize="@dimen/btn_text_size" />
-                <!-- android:background="@drawable/shape_button_rounded"
-                    android:foreground="?attr/selectableItemBackground" -->
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>

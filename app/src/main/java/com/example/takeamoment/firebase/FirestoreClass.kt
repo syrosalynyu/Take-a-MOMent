@@ -1,12 +1,11 @@
 package com.example.takeamoment.firebase
 
 import android.app.Activity
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
-import com.example.takeamoment.activities.MainActivity
-import com.example.takeamoment.activities.SignInActivity
-import com.example.takeamoment.activities.SignUpActivity
-import com.example.takeamoment.activities.TimeConvertActivity
+import androidx.annotation.RequiresApi
+import com.example.takeamoment.activities.*
 import com.example.takeamoment.models.Reminder
 import com.example.takeamoment.models.User
 import com.google.firebase.auth.FirebaseAuth
@@ -30,6 +29,7 @@ class FirestoreClass {
 
 
     // To sign in the User (to get the user data from the Firebase)
+    @RequiresApi(Build.VERSION_CODES.O)
     fun signInUser(activity: Activity, readRemindersList: Boolean = false){
         mFireStore.collection("users")
             .document(getCurrentUserId())
@@ -38,17 +38,32 @@ class FirestoreClass {
                 val loggedInUser = document.toObject(User::class.java)!!
 
                 when(activity){
-//                    is SignInActivity -> {
-//                        activity.signInSuccess(loggedInUser)
-//                    }
-                    // 這個是要用來將傳送user info & readboardlist)
                     is MainActivity -> {
                         activity.updateNavigationUserDetails(loggedInUser, readRemindersList)
+                    }
+                    is MyProfileActivity -> {
+                        activity.setUserDataInUI(loggedInUser)
                     }
                 }
 
             }.addOnFailureListener{ e ->
                 Log.e("SingInUser", "Error writing document", e)
+            }
+    }
+
+    // to update the user data in My Profile page
+    fun updateUserProfileData(activity:MyProfileActivity,
+                              userHashMap: HashMap<String, Any>){
+        mFireStore.collection("users")
+            .document(getCurrentUserId())
+            .update(userHashMap)
+            .addOnSuccessListener {
+                Log.e(activity.javaClass.simpleName, "User Profile updated successfully.")
+                Toast.makeText(activity, "User Profile updated successfully.", Toast.LENGTH_LONG).show()
+                activity.profileUpdateSuccess()
+            }.addOnFailureListener {
+                    e ->
+                Log.e(activity.javaClass.simpleName, "Profile update failed", e)
             }
     }
 
