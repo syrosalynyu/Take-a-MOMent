@@ -152,10 +152,13 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/btn_marginStartEnd"
                     android:layout_marginTop="@dimen/sign_up_screen_btn_marginTop"
+                    android:layout_marginBottom="@dimen/authentication_screen_til_marginTop"
                     android:layout_marginEnd="@dimen/btn_marginStartEnd"
                     android:gravity="center"
                     android:paddingTop="@dimen/btn_paddingTopBottom"
                     android:paddingBottom="@dimen/btn_paddingTopBottom"
+                    android:background="@drawable/green_button_rounded"
+                    android:foreground="?attr/selectableItemBackground"
                     android:text="@string/update"
                     android:textColor="@color/primary_text_color"
                     android:textSize="@dimen/btn_text_size" />

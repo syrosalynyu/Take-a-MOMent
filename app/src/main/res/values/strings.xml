@@ -27,5 +27,7 @@
     <string name="create_reminder">Create Reminder</string>
     <string name="select_date_time">Select Date and Time</string>
 
+    <string name="time_to_call_mom">It\'s time to call Mom</string>
+    <string name="stop_alarm">Stop the Alarm</string>
 
 </resources>

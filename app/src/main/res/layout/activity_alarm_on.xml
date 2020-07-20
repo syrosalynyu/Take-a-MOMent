@@ -3,28 +3,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
+    android:background="@drawable/ic_bg3"
     tools:context=".activities.AlarmOnActivity">
 
+    <ImageView
+        android:layout_width="121dp"
+        android:layout_height="105dp"
+        android:layout_marginTop="@dimen/time_to_call_mom_title_margin"
+        android:layout_marginStart="@dimen/time_to_call_mom_photo_marginStart"
+        android:layout_marginBottom="@dimen/intro_screen_image_marginTop"
+        android:contentDescription="intro_image"
+        android:src="@drawable/mom_phone" />
 
-    <LinearLayout
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/intro_screen_title_text_marginTop"
+        android:text="@string/time_to_call_mom"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"
+        android:textSize="@dimen/lets_get_started_text_size"/>
+
+    <Button
+        android:id="@+id/btn_stop_alarm"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/btn_marginStartEnd"
+        android:layout_marginTop="@dimen/time_to_call_mom_btn_margin"
+        android:layout_marginEnd="@dimen/btn_marginStartEnd"
         android:gravity="center"
-        android:layout_marginTop="@dimen/authentication_screen_content_marginTop"
-        android:orientation="vertical">
+        android:background="@drawable/white_button_rounded"
+        android:paddingTop="@dimen/btn_paddingTopBottom"
+        android:paddingBottom="@dimen/btn_paddingTopBottom"
+        android:text="@string/stop_alarm"
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/btn_text_size" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20sp"
-            android:text="Time to call Mom!!"
-            android:textSize="24dp"/>
-        <Button
-            android:id="@+id/btn_stop_alarm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Stop the alarm"/>
-    </LinearLayout>
 </LinearLayout>

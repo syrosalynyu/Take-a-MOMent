@@ -19,6 +19,7 @@
         android:layout_marginBottom="@dimen/nav_content_margin_bottom"
         android:textColor="@android:color/black"
         android:textSize="@dimen/nav_user_name_text_size"
+        android:textStyle="bold"
         tools:text="Username" />
 
     <View
