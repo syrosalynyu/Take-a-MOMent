@@ -72,13 +72,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!--TextView
-                android:id="@+id/tv_my_datetime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/intro_screen_title_text_marginTop"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="18sp" /-->
             <Button
                 android:id="@+id/btn_my_datetime_picker"
                 android:layout_width="wrap_content"
@@ -93,10 +86,6 @@
                 />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-    <!--ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" /-->
-
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -147,14 +136,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
-            <!--TextView
-                android:id="@+id/tv_mom_datetime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/darker_gray"
-                android:layout_marginTop="@dimen/intro_screen_title_text_marginTop"
-                android:textSize="18sp" /-->
             <Button
                 android:id="@+id/btn_mom_datetime_picker"
                 android:layout_width="wrap_content"

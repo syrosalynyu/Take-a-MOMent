@@ -8,17 +8,6 @@
     android:background="@drawable/ic_bg3"
     tools:context=".activities.IntroActivity">
 
-    <!--TextView
-        android:id="@+id/tv_app_name_intro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/intro_screen_title_text_marginTop"
-        android:text="@string/app_name"
-        android:textColor="@color/colorAccent"
-        android:textSize="@dimen/intro_screen_title_text_size"
-        android:textStyle="bold" /-->
-
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -80,8 +69,5 @@
         android:text="@string/dont_have_account"
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/btn_text_size_sm" />
-    <!-- android:background="@drawable/white_border_shape_button_rounded"
-    android:foreground="?attr/selectableItemBackground" -->
-
 
 </LinearLayout>
