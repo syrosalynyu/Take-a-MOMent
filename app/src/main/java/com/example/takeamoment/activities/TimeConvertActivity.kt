@@ -101,7 +101,7 @@ class TimeConvertActivity : AppCompatActivity() {
         val momDateTime: String = et_mom_datetime.text.toString().trim { it <= ' ' }
 
         // create a Reminder object locally
-        var reminder = Reminder(user, myDateTime, momName, momDateTime, "none", futureUnix)
+        val reminder = Reminder(user, myDateTime, momName, momDateTime, "none", futureUnix)
 
         // do the actually creation on Firestore
         FirestoreClass().createReminderOnFirestore(this, reminder)
@@ -114,19 +114,15 @@ class TimeConvertActivity : AppCompatActivity() {
         // get the current system UNIX time
         currentUnix = System.currentTimeMillis() / 1000L
         // get the future UNIX from the top
-        var sec = (futureUnix - currentUnix).toInt()
-        var intent = Intent(applicationContext, MyBroadcastReceiver::class.java)
+        val sec = (futureUnix - currentUnix).toInt()
+        val intent = Intent(applicationContext, MyBroadcastReceiver::class.java)
 
-        //var pi = PendingIntent.getBroadcast(applicationContext, futureUnix.toInt(), intent, 0)
-        //var pi = PendingIntent.getBroadcast(applicationContext, futureUnix.toInt(), intent, PendingIntent.FLAG_CANCEL_CURRENT)
-        var pi = PendingIntent.getBroadcast(applicationContext, futureUnix.toInt(), intent, PendingIntent.FLAG_ONE_SHOT)
+        val pi = PendingIntent.getBroadcast(applicationContext, futureUnix.toInt(), intent, PendingIntent.FLAG_ONE_SHOT)
 
-
-        var am = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val am = getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (sec*1000), pi)
 
-        //Toast.makeText(applicationContext, "Reminder Created Successfully.", Toast.LENGTH_LONG).show()
     }
 
 
@@ -158,7 +154,7 @@ class TimeConvertActivity : AppCompatActivity() {
                     this,
                     TimePickerDialog.OnTimeSetListener { view, selectedHourOfDay, selectedMinute ->
 
-                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a")
                         val myDateTime = LocalDateTime.of(
                             selectedYear,
                             selectedMonth + 1,
@@ -181,7 +177,6 @@ class TimeConvertActivity : AppCompatActivity() {
                         val epoch: Long = myDateTime.atZone(myTimeZone).toEpochSecond()
                         futureUnix = epoch
 
-                        // Toast.makeText(applicationContext, "${futureUnix}", Toast.LENGTH_LONG).show()
 
                     }, hourOfDate
                     , minute
@@ -215,7 +210,7 @@ class TimeConvertActivity : AppCompatActivity() {
                     this,
                     TimePickerDialog.OnTimeSetListener { view, selectedHourOfDay, selectedMinute ->
 
-                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a")
                         val myDateTime = LocalDateTime.of(
                             selectedYear,
                             selectedMonth + 1,
@@ -231,15 +226,12 @@ class TimeConvertActivity : AppCompatActivity() {
                         val zdtAtMom = myDateTime.atZone(momTimeZone)
                         val zdtAtMy = zdtAtMom.withZoneSameInstant(myTimeZone)
 
-
                         et_my_datetime.setText(zdtAtMy.format(formatter))
                         et_mom_datetime.setText(zdtAtMom.format(formatter))
 
                         // get the future time in UNIX format
                         val epoch: Long = myDateTime.atZone(momTimeZone).toEpochSecond()
                         futureUnix = epoch
-
-                        // Toast.makeText(applicationContext, "${futureUnix}", Toast.LENGTH_LONG).show()
 
                     }, hourOfDate
                     , minute
