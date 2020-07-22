@@ -48,21 +48,21 @@ Two Firebase products were used in this application. Firebase Authentication is 
  
 ## Screenshots
 ### Sign In/ Sign Up
-![SignIn]()./images/signIn.gif
-![SignUp]()./images/signUp.gif
+![SignIn](./images/signIn.gif)
+![SignUp](./images/signUp.gif)
 
 #### Time Converting and Create a Reminder
 The user can convert the date and time either based on the user's timezone or mom’s timezone. A reminder along with an alarm will be created by clicking on the “Create Reminder” button. If you just want to use the time converting tool without creating any reminder and alarm, simply click the back arrow on the top left and back to the homepage.
 
-![Time converting and create reminder]()./images/createReminderAndFireAlarm.gif
+![Time converting and create reminder](./images/createReminderAndFireAlarm.gif)
 
 #### Edit User Profile
 Your user info will reflect immediately after you update your profile. You can see your new timezone in the time converting tool right after the update.
 
-![Edit user profile]()./images/updateProfile.gif
+![Edit user profile](./images/updateProfile.gif)
 
 #### Delete an Alarm/Reminder
 Click on an existing reminder to delete an alarm.
 
-![Delete an alarm]()./images/deleteReminder.gif
+![Delete an alarm](./images/deleteReminder.gif)
 
