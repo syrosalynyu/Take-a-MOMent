@@ -7,7 +7,7 @@
   * [Android Studio](#android-studio)
   * [Firebase](#firebase)
 * [Screenshots](#screenshots)
-* [Kanban Board](#https://video-store-api.atlassian.net/secure/RapidBoard.jspa?rapidView=3&projectKey=MOM)
+* [Kanban Board](https://video-store-api.atlassian.net/secure/RapidBoard.jspa?rapidView=3&projectKey=MOM)
  
 This is the repository for Take a MOMent, an [Ada Developers Academy Capstone Project](https://github.com/Ada-C13/capstone).
 
@@ -25,7 +25,7 @@ Take a MOMent is an Android app to help users beat the time differences and find
 
 ## Environment Setup
 ### Android Studio: 
-1. If you wish to run the app using the emulator, we highly recommend using Android Studio as your IDE. 
+1. If you wish to run the app using the emulator, we highly recommend using [Android Studio](https://developer.android.com/studio) as your IDE. 
 2. Fork this repository
 3. Clone it to your local by clicking “Get from Version Control” on the Android Studio welcome page and provide the URL of your forked repository
 4. To set up the emulator, click on Tools > AVD Manager > Create Virtual Device
@@ -34,7 +34,7 @@ Take a MOMent is an Android app to help users beat the time differences and find
 7. Click Finish to create your emulator
 ### Firebase:
 Two Firebase products were used in this application. Firebase Authentication is implemented to identify users, and Cloud Firestore serves as the database to store users' info and reminders. 
-1. If this is your first time using Firebase, register your Firebase account.
+1. If this is your first time using Firebase, [register your Firebase account](https://firebase.google.com/?gclid=EAIaIQobChMI2_fjwf3e6gIVchh9Ch0OQAlIEAAYASAAEgIxyvD_BwE).
 2. Click on Firebase Console > Add Project
 3. Click on the newly created project on Firebase Console > select the Android icon to add Firebase to the app > follow the instruction 
 #### To set up Firebase Authentication:
