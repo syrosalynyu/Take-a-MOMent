@@ -1,5 +1,7 @@
 # Take-a-MOMent
 
+This is the repository for Take a MOMent, an [Ada Developers Academy Capstone Project](https://github.com/Ada-C13/capstone).
+
 ## Table of Contents:
 * [About](#about)
 * [Technology Stacks](#technology-stacks)
@@ -9,7 +11,6 @@
 * [Screenshots](#screenshots)
 * [Kanban Board](https://video-store-api.atlassian.net/secure/RapidBoard.jspa?rapidView=3&projectKey=MOM)
  
-This is the repository for Take a MOMent, an [Ada Developers Academy Capstone Project](https://github.com/Ada-C13/capstone).
 
 ## About
 Finding a good time to call mom is always a challenge for people like me who live in different countries with their mom. Most apps only show the current time of a city in a different time zone, and I find it not handy/convenient when I need to schedule calls for a future date/time with my mom who's living overseas.
