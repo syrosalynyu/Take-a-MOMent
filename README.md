@@ -47,7 +47,7 @@ Two Firebase products were used in this application. Firebase Authentication is 
 3. Once the database is successfully created, make sure the dropdown next to the Database title is showing “Cloud Firestore” instead of “Realtime Database”
  
 ## Screenshots
-### Sign In/ Sign Up
+#### Sign In/ Sign Up
 ![SignIn](./images/signIn.gif)
 ![SignUp](./images/signUp.gif)
 
